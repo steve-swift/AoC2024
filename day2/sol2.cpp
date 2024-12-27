@@ -11,38 +11,25 @@ vector<int> tokenize(string input, const char delim){
         vector<int> out;
         istringstream iss(input);
         string temp;
-
-        while(getline(iss, temp, delim)){
+        while(getline(iss, temp, delim)){ 
                 out.push_back(atoi(temp.c_str()));
         }
-        cout << out.size() << endl;
         return out;
 }
 
 bool isIncOrDec(vector<int> input){
         int balance = 0;
-	bool slip_allowed = true;
 
         for(int i = 1; i < input.size(); i++){
                 int dif = input[i] - input[i-1];
                 // no dif or too much dif
-                if(dif == 0 || abs(dif) > 3){
-			if(slip_allowed){
-				slip_allowed = false;
-                                input.erase(input.begin()+i);
-                                i--;
-				continue; 
-			}else{
-				return false;
-			}
-		}
+                if(abs(dif) == 0 || abs(dif) > 3) return false;
                 //
                 if(dif >= 1) balance += 1;
                 else         balance -= 1;
         }
- 
+
         if(abs(balance) == input.size()-1) return true;
-        if(abs(balance) >= input.size()-
         return false;
 }
 
@@ -54,7 +41,14 @@ int main(){
 
         while(getline(cin, lineIn)){
                 vector<int> data = tokenize(lineIn, ' ');
-                if(isIncOrDec(data)) sumOfSafe++;
+                for(int i = 0; i < data.size(); i++){
+			vector<int> tmp = data; 
+			tmp.erase(tmp.begin()+i);
+			if(isIncOrDec(tmp)){
+				sumOfSafe++;
+				break;
+			}
+		}
         }
 
         cout << sumOfSafe << endl;
